@@ -21,7 +21,12 @@ def get_author(db: Session, author_id: int):
 
 
 def create_book(db: Session, book: BookCreate, author_id: int):
-    db_book = Book(**book.dict(), author_id=author_id)
+    db_book = Book(
+        title=book.title,
+        summary=book.summary,
+        publication_date=book.publication_date,
+        author_id=author_id
+    )
     db.add(db_book)
     db.commit()
     db.refresh(db_book)
