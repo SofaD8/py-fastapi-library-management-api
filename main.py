@@ -40,7 +40,15 @@ def read_author(author_id: int, db: Session = Depends(get_db)):
 
 
 @app.post("/authors/{author_id}/books/", response_model=Book)
-def create_book_for_author(author_id: int, book: BookCreate, db: Session = Depends(get_db)):
+def create_book_for_author(
+        author_id: int,
+        book: BookCreate,
+        db: Session = Depends(get_db)
+):
+    author = get_author(db, author_id)
+    if author is None:
+        raise HTTPException(status_code=404, detail="Автор не знайдено")
+
     return create_book(db, book, author_id=author_id)
 
 
